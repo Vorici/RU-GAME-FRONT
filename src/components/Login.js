@@ -4,6 +4,7 @@ import { Modal } from 'semantic-ui-react';
 import Register from './Register';
 import Profile from '../containers/Profile';
 
+const AUTH_URL = 'http://localhost:5000/auth';
 const GET_TOKEN_URL = 'http://localhost:5000/user_token';
 export default class Login extends Component {
   constructor(props) {
@@ -11,29 +12,47 @@ export default class Login extends Component {
 
     this.state = {
       clickedFormLoginButton: false,
+      loggedIn: false,
       clickedFormRegisterButton: false,
       loginEmail: null,
-      loginPassword: null
+      loginPassword: null,
+      token: null,
+      authResponse: null
     };
   }
 
-  // HANDLE INPUT FIELDS HERE FOR REGISTRATION
+  getToken = () => {
+    if (this.state.loginEmail && this.state.loginPassword) {
+      const email = this.state.loginEmail.toLowerCase();
+      const password = this.state.loginPassword;
+      const postConfig = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          auth: {
+            email: email,
+            password: password
+          }
+        })
+      };
+      return fetch(GET_TOKEN_URL, postConfig)
+        .then((r) => r.json())
+        .then((response) => {
+          this.testTokenAndSignIn(response.jwt);
+        });
+    }
+  };
 
-  getToken = (email, username, password, confirmedPassword) => {
-    const postConfig = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user: {
-          email: email,
-          password: password,
-          username: username
-        }
-      })
+  testTokenAndSignIn = (token) => {
+    const getConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
     };
-    return fetch(GET_TOKEN_URL, postConfig).then((r) =>
+    return fetch(AUTH_URL, getConfig).then((r) =>
       this.setState({
-        registerResponse: r.status
+        authResponse: r.status
       })
     );
   };
@@ -42,49 +61,43 @@ export default class Login extends Component {
     this.setState({
       clickedFormLoginButton: true
     });
+    this.getToken();
   };
 
-  handleRegisterFormClick = (event) => {
+  handleRegisterFormClick = () => {
     this.setState({
       clickedFormRegisterButton: true
     });
   };
 
   handleEmailInputChange = (event) => {
-    // console.log(event.target.value);
+    console.log(this.state.loginEmail);
     this.setState({
       loginEmail: event.target.value
     });
-    console.log(this.state.loginEmail);
   };
 
   handlePasswordInputChange = (event) => {
-    // console.log(event.target.value);
+    console.log(this.state.loginPassword);
     this.setState({
       loginPassword: event.target.value
     });
-    console.log(this.state.loginPassword);
   };
 
-  // createUser = (email, password, username) => {
-  //   const postConfig = {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       message: {
-  //         email: email,
-  //         password: password,
-  //         username: username,
-  //       },
-  //     }),
-  //   };
-
-  //   return fetch(CREATE_USER_URL, postConfig);
-  // };
+  handleLoggingIn = () => {
+    this.setState({ loggedIn: true });
+  };
 
   render() {
+    if (this.state.authResponse) {
+      console.log(this.state.authResponse);
+    }
+    // if (this.state.token) {
+    //   console.log('token', this.state.token);
+    // }
+    // if (this.state.loginEmail) {
+    //   console.log('email', this.state.loginEmail);
+    // }
     return (
       <div>
         {this.state.clickedFormRegisterButton ? (
