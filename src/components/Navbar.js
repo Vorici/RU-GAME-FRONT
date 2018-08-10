@@ -11,10 +11,10 @@ export default class Navbar extends Component {
             onClick={this.props.onLoginClick}
             className="ui primary button"
           >
-            Login
+            LOGIN
           </button>
           <button onClick={this.props.onRegisterClick} className="ui button">
-            Sign Up
+            SIGN UP
           </button>
         </div>
       </div>

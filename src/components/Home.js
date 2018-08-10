@@ -13,11 +13,3 @@ export default class Home extends Component {
     );
   }
 }
-
-// {
-//   this.state.clickedRegister ? (
-//     <Register />
-//   ) : (
-//     <Navbar onLoginClick={this.handleLoginClick} />
-//   );
-// }
