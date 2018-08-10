@@ -51,9 +51,7 @@ export default class Login extends Component {
       }
     };
     return fetch(AUTH_URL, getConfig).then((r) =>
-      this.setState({
-        authResponse: r.status
-      })
+      this.props.onAuthLoginClick(r.status)
     );
   };
 
@@ -84,14 +82,14 @@ export default class Login extends Component {
     });
   };
 
-  handleLoggingIn = () => {
-    this.setState({ loggedIn: true });
-  };
+  // handleLoggingIn = () => {
+  //   this.setState({ loggedIn: true });
+  // };
 
   render() {
-    if (this.state.authResponse) {
-      console.log(this.state.authResponse);
-    }
+    // if (this.state.authResponse) {
+    //   console.log('hey', this.state.authResponse);
+    // }
     // if (this.state.token) {
     //   console.log('token', this.state.token);
     // }
@@ -143,9 +141,7 @@ export default class Login extends Component {
                         </div>
                       </div>
                       <div
-                        onClick={(event) =>
-                          this.handleLoginFormClick(event.target.value)
-                        }
+                        onClick={this.handleLoginFormClick}
                         className="ui fluid large teal submit button"
                       >
                         Login

@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 
 export default class Profile extends Component {
   render() {
-    return <div>PROFILE</div>;
+    console.log(this.props.loggedInUser);
+    return (
+      <div>
+        <p>{`${this.props.loggedInUser}`}</p>
+      </div>
+    );
   }
 }
