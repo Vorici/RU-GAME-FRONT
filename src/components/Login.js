@@ -50,9 +50,9 @@ export default class Login extends Component {
         'Content-Type': 'application/json'
       }
     };
-    return fetch(AUTH_URL, getConfig).then((r) =>
-      this.props.onAuthLoginClick(r.status)
-    );
+    return fetch(AUTH_URL, getConfig)
+      .then((r) => r.json())
+      .then((res) => this.props.onAuthLoginClick(res.status, res.user));
   };
 
   handleLoginFormClick = () => {
@@ -69,33 +69,18 @@ export default class Login extends Component {
   };
 
   handleEmailInputChange = (event) => {
-    console.log(this.state.loginEmail);
     this.setState({
       loginEmail: event.target.value
     });
   };
 
   handlePasswordInputChange = (event) => {
-    console.log(this.state.loginPassword);
     this.setState({
       loginPassword: event.target.value
     });
   };
 
-  // handleLoggingIn = () => {
-  //   this.setState({ loggedIn: true });
-  // };
-
   render() {
-    // if (this.state.authResponse) {
-    //   console.log('hey', this.state.authResponse);
-    // }
-    // if (this.state.token) {
-    //   console.log('token', this.state.token);
-    // }
-    // if (this.state.loginEmail) {
-    //   console.log('email', this.state.loginEmail);
-    // }
     return (
       <div>
         {this.state.clickedFormRegisterButton ? (

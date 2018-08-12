@@ -5,6 +5,8 @@ import Login from './Login';
 
 const CREATE_USER_URL = 'http://localhost:5000/users/create';
 
+// REMEMBER TO FIX THAT LOGIN PAGE DOES NOT APPEAR AFTER REGISTRATION
+
 export default class Register extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +22,7 @@ export default class Register extends Component {
   }
 
   createUser = (email, username, password, confirmedPassword) => {
-    if (this.state.password === this.state.confirmedPassword) {
+    if (password === confirmedPassword) {
       const postConfig = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -38,6 +40,7 @@ export default class Register extends Component {
         })
       );
     } else {
+      this.setState({ registrationClick: false });
       alert('Your Passwords did not match! Please try again.');
     }
   };
@@ -64,31 +67,24 @@ export default class Register extends Component {
   };
 
   handleRegisterUsername = (event) => {
-    console.log(event.target.value);
-
     this.setState({
       usernameInputField: event.target.value
     });
   };
 
   handleRegisterEmail = (event) => {
-    console.log(event.target.value);
-
     this.setState({
       emailInputField: event.target.value
     });
   };
 
   handleRegisterPassword = (event) => {
-    console.log(event.target.value);
     this.setState({
       passwordInputField: event.target.value
     });
   };
 
   handleRegisterConfirmedPassword = (event) => {
-    console.log(event.target.value);
-
     this.setState({ confirmedPasswordInputField: event.target.value });
   };
 
@@ -97,180 +93,188 @@ export default class Register extends Component {
   };
 
   renderLoginAfterRegistration = () => {
-    switch (this.state.registerResponse) {
-      case 200:
-        this.changeResponseCodeToNull();
-        return (
-          <div>
-            <Login />
-          </div>
-        );
-      case 204:
-        alert('Email Already In Use');
-        this.changeResponseCodeToNull();
-        return (
-          <div>
-            <Modal size={'small'} open={true} closeIcon>
-              <Modal.Content>
-                <div className="ui middle aligned center aligned grid">
-                  <div className="column">
-                    <h2 className="ui image header">
-                      <div className="content">Register</div>
-                    </h2>
-                    <form
-                      action="https://s.codepen.io/voltron2112/debug/PqrEPM?"
-                      method="get"
-                      className="ui large form"
-                    >
-                      <div className="ui stacked secondary  segment">
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="user icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterUsername(event)
-                              }
-                              type="text"
-                              name="username"
-                              placeholder="Create a UserName"
-                            />
+    if (this.state.registrationClick) {
+      return (
+        <div>
+          <Login onAuthLoginClick={this.props.onAuthLoginClick} />
+        </div>
+      );
+    } else {
+      switch (this.state.registerResponse) {
+        case 200:
+          this.changeResponseCodeToNull();
+          return (
+            <div>
+              <Login />
+            </div>
+          );
+        case 204:
+          alert('Email Already In Use');
+          this.changeResponseCodeToNull();
+          return (
+            <div>
+              <Modal size={'small'} open={true} closeIcon>
+                <Modal.Content>
+                  <div className="ui middle aligned center aligned grid">
+                    <div className="column">
+                      <h2 className="ui image header">
+                        <div className="content">Register</div>
+                      </h2>
+                      <form
+                        action="https://s.codepen.io/voltron2112/debug/PqrEPM?"
+                        method="get"
+                        className="ui large form"
+                      >
+                        <div className="ui stacked secondary  segment">
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="user icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterUsername(event)
+                                }
+                                type="text"
+                                name="username"
+                                placeholder="Create a UserName"
+                              />
+                            </div>
+                          </div>
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="mail icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterEmail(event)
+                                }
+                                type="text"
+                                name="email"
+                                placeholder="E-Mail Address"
+                              />
+                            </div>
+                          </div>
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="lock icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterPassword(event)
+                                }
+                                type="password"
+                                name="password"
+                                placeholder="Create a Password"
+                              />
+                            </div>
+                          </div>
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="lock icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterConfirmedPassword(event)
+                                }
+                                type="password"
+                                name="password2"
+                                placeholder="Confirm Your Password"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            onClick={this.handleRegistration}
+                            className="ui fluid large teal submit button"
+                          >
+                            Sign Up!
                           </div>
                         </div>
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="mail icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterEmail(event)
-                              }
-                              type="text"
-                              name="email"
-                              placeholder="E-Mail Address"
-                            />
-                          </div>
-                        </div>
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="lock icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterPassword(event)
-                              }
-                              type="password"
-                              name="password"
-                              placeholder="Create a Password"
-                            />
-                          </div>
-                        </div>
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="lock icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterConfirmedPassword(event)
-                              }
-                              type="password"
-                              name="password2"
-                              placeholder="Confirm Your Password"
-                            />
-                          </div>
-                        </div>
-                        <div
-                          onClick={this.handleRegistration}
-                          className="ui fluid large teal submit button"
-                        >
-                          Sign Up!
-                        </div>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              </Modal.Content>
-            </Modal>
-          </div>
-        );
-      default:
-        return (
-          <div>
-            <Modal size={'small'} open={true} closeIcon>
-              <Modal.Content>
-                <div className="ui middle aligned center aligned grid">
-                  <div className="column">
-                    <h2 className="ui image header">
-                      <div className="content">Register</div>
-                    </h2>
-                    <form
-                      action="https://s.codepen.io/voltron2112/debug/PqrEPM?"
-                      method="get"
-                      className="ui large form"
-                    >
-                      <div className="ui stacked secondary  segment">
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="user icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterUsername(event)
-                              }
-                              type="text"
-                              name="username"
-                              placeholder="Create a UserName"
-                            />
+                </Modal.Content>
+              </Modal>
+            </div>
+          );
+        default:
+          return (
+            <div>
+              <Modal size={'small'} open={true} closeIcon>
+                <Modal.Content>
+                  <div className="ui middle aligned center aligned grid">
+                    <div className="column">
+                      <h2 className="ui image header">
+                        <div className="content">Register</div>
+                      </h2>
+                      <form
+                        action="https://s.codepen.io/voltron2112/debug/PqrEPM?"
+                        method="get"
+                        className="ui large form"
+                      >
+                        <div className="ui stacked secondary  segment">
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="user icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterUsername(event)
+                                }
+                                type="text"
+                                name="username"
+                                placeholder="Create a UserName"
+                              />
+                            </div>
+                          </div>
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="mail icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterEmail(event)
+                                }
+                                type="text"
+                                name="email"
+                                placeholder="E-Mail Address"
+                              />
+                            </div>
+                          </div>
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="lock icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterPassword(event)
+                                }
+                                type="password"
+                                name="password"
+                                placeholder="Create a Password"
+                              />
+                            </div>
+                          </div>
+                          <div className="field">
+                            <div className="ui left icon input">
+                              <i className="lock icon" />
+                              <input
+                                onChange={(event) =>
+                                  this.handleRegisterConfirmedPassword(event)
+                                }
+                                type="password"
+                                name="password2"
+                                placeholder="Confirm Your Password"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            onClick={this.handleRegistration}
+                            className="ui fluid large teal submit button"
+                          >
+                            Sign Up!
                           </div>
                         </div>
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="mail icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterEmail(event)
-                              }
-                              type="text"
-                              name="email"
-                              placeholder="E-Mail Address"
-                            />
-                          </div>
-                        </div>
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="lock icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterPassword(event)
-                              }
-                              type="password"
-                              name="password"
-                              placeholder="Create a Password"
-                            />
-                          </div>
-                        </div>
-                        <div className="field">
-                          <div className="ui left icon input">
-                            <i className="lock icon" />
-                            <input
-                              onChange={(event) =>
-                                this.handleRegisterConfirmedPassword(event)
-                              }
-                              type="password"
-                              name="password2"
-                              placeholder="Confirm Your Password"
-                            />
-                          </div>
-                        </div>
-                        <div
-                          onClick={this.handleRegistration}
-                          className="ui fluid large teal submit button"
-                        >
-                          Sign Up!
-                        </div>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
-                </div>
-              </Modal.Content>
-            </Modal>
-          </div>
-        );
+                </Modal.Content>
+              </Modal>
+            </div>
+          );
+      }
     }
   };
 

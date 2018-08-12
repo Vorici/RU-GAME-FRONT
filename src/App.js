@@ -3,7 +3,7 @@ import './App.css';
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar';
 import Profile from './containers/Profile';
 
 export default class App extends Component {
@@ -14,7 +14,8 @@ export default class App extends Component {
       clickedRegister: false,
       clickedLogin: false,
       loggedIn: false,
-      statusCode: null
+      statusCode: null,
+      userName: null
     };
   }
 
@@ -30,18 +31,21 @@ export default class App extends Component {
     });
   };
 
-  handleLoggingIn = (statusCode) => {
-    this.setState({
-      loggedIn: true,
-      statusCode
-    });
+  handleLoggingIn = (statusCode, userName) => {
+    if (statusCode === 200)
+      this.setState({
+        loggedIn: true,
+        clickedLogin: false,
+        statusCode,
+        userName
+      });
   };
 
   render() {
     return (
       <div className="home">
-        {this.state.loggedIn && this.state.statusCode === 200 ? (
-          <Profile loggedInUser={this.state.loggedInUser} />
+        {this.state.loggedIn ? (
+          <Profile loggedInUser={this.state.userName} />
         ) : this.state.clickedLogin ? (
           <Login onAuthLoginClick={this.handleLoggingIn} />
         ) : (
@@ -50,7 +54,7 @@ export default class App extends Component {
             onLoginClick={this.handleLoginClick}
           />
         ) && this.state.clickedRegister ? (
-          <Register />
+          <Register onAuthLoginClick={this.handleLoggingIn} />
         ) : (
           <Home
             onRegisterClick={this.handleRegisterClick}
