@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import Navbar from '../components/Navbar';
+import ActionButton from '../components/ActionButton';
+import PickSport from '../components/PickSport';
+import { componentFromProp } from '../../node_modules/recompose';
 export default class Profile extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      loggedInNavbar: true
+      loggedInNavbar: true,
+      clickedActionButton: false
     };
   }
+
+  handleActionButtonClick = () => {
+    this.setState({
+      clickedActionButton: true
+    });
+  };
 
   render() {
     return (
@@ -16,7 +26,11 @@ export default class Profile extends Component {
           loggedInUser={this.props.loggedInUser}
           loggedInNavbar={this.state.loggedInNavbar}
         />
-        <p>{`${this.props.loggedInUser}`}</p>
+        {this.state.clickedActionButton ? (
+          <PickSport />
+        ) : (
+          <ActionButton onActionButtonClick={this.handleActionButtonClick} />
+        )}
       </div>
     );
   }

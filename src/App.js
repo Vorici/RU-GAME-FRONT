@@ -5,7 +5,10 @@ import Login from './components/Login';
 import Register from './components/Register';
 // import Navbar from './components/Navbar';
 import Profile from './containers/Profile';
+import MyFancyComponent from './components/Map';
+//API KEY AIzaSyAAo9d1K0g7k4iA86EtqE39x-cXaoZeUns
 
+/////api key google places AIzaSyCQ4RC-x0m2ElpmTGeT1YMkf7upb_mPDq8
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +17,6 @@ export default class App extends Component {
       clickedRegister: false,
       clickedLogin: false,
       loggedIn: false,
-      statusCode: null,
       userName: null
     };
   }
@@ -36,11 +38,9 @@ export default class App extends Component {
       this.setState({
         loggedIn: true,
         clickedLogin: false,
-        statusCode,
         userName
       });
   };
-
   render() {
     return (
       <div className="home">
@@ -65,3 +65,11 @@ export default class App extends Component {
     );
   }
 }
+//   render() {
+//     return (
+//       <div className="home">
+//         <MyFancyComponent />
+//       </div>
+//     );
+//   }
+// }
