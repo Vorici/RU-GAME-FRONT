@@ -85,27 +85,32 @@ const images = [
   {
     url: baseballImage,
     title: 'Baseball',
-    width: '40%'
+    width: '40%',
+    term: 'Baseball Field'
   },
   {
     url: footballImage,
     title: 'Football',
-    width: '30%'
+    width: '30%',
+    term: 'Football Field'
   },
   {
     url: soccerImage,
     title: 'Soccer',
-    width: '30%'
+    width: '30%',
+    term: 'Soccer Field'
   }
 ];
 
 function PickSport(props) {
+  const sport = props.onSportClick;
   const { classes } = props;
 
   return (
     <div className={classes.root}>
       {images.map((image) => (
         <ButtonBase
+          onClick={() => sport(image.term)}
           focusRipple
           key={image.title}
           className={classes.image}

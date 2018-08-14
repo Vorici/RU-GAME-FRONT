@@ -46,13 +46,6 @@ export default class Register extends Component {
   };
 
   handleRegistration = () => {
-    // if (
-    //   this.state.usernameInputField &&
-    //   this.state.emailInputField &&
-    //   this.state.passwordInputField &&
-    //   this.state.confirmPasswordInputField !== null
-    // )
-
     this.createUser(
       this.state.emailInputField,
       this.state.usernameInputField,
@@ -85,7 +78,7 @@ export default class Register extends Component {
   };
 
   handleRegisterConfirmedPassword = (event) => {
-    this.setState({ confirmedPasswordInputField: event.target.value });
+    this.setState({ confirmPasswordInputField: event.target.value });
   };
 
   changeResponseCodeToNull = () => {
