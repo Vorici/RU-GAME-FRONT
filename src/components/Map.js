@@ -8,6 +8,7 @@ import {
   GoogleMap,
   Marker
 } from 'react-google-maps';
+import Profile from '../containers/Profile';
 
 let sportTerm;
 const MAP_URL =
@@ -79,11 +80,17 @@ export default class MyFancyComponent extends React.PureComponent {
     super(props);
 
     this.state = {
+      createdGameAndShowProfile: false,
       loggedInUser: this.props.loggedInUser,
       placeName: null,
       placeAddress: null,
       placeHours: false,
-      placePhotos: []
+      placePhotos: [],
+      placeSport: this.props.sport,
+      placeDate: null,
+      placeTime: null,
+      placeComments: null,
+      placeMaxPlayers: null
     };
 
     sportTerm = this.props.sportTerm;
@@ -98,22 +105,49 @@ export default class MyFancyComponent extends React.PureComponent {
     });
   };
 
+  handleGettingDate = (event) => {
+    this.setState({
+      placeDate: event.target.value
+    });
+  };
+
+  handleGettingTime = (event) => {
+    this.setState({
+      placeTime: event.target.value
+    });
+  };
+
+  handleGettingComments = (event) => {
+    this.setState({
+      placeComments: event.target.value
+    });
+  };
+
+  handleGettingMaxPlayers = (event) => {
+    this.setState({
+      placeMaxPlayers: event.target.value
+    });
+  };
+
   handleCreateGameSubmit = () => {
+    this.setState({
+      createdGameAndShowProfile: true
+    });
     const CREATE_GAME_URL = 'http://localhost:5000/games/create';
-    const loggedInUser = this.state.loggedInUser;
-    const name = this.state.name;
-    const address = this.state.address;
-    const sport = this.state.sport;
-    const date = this.state.date;
-    const time = this.state.time;
-    const comments = this.state.comments;
-    const max_players = this.state.max_players;
+    const created_by_username = this.state.loggedInUser;
+    const name = this.state.placeName;
+    const address = this.state.placeAddress;
+    const sport = this.state.placeSport;
+    const date = this.state.placeDate;
+    const time = this.state.placeTime;
+    const comments = this.state.placeComments;
+    const max_players = this.state.placeMaxPlayers;
     const postConfig = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         game: {
-          created_by_username: loggedInUser,
+          created_by_username,
           name,
           address,
           sport,
@@ -129,20 +163,35 @@ export default class MyFancyComponent extends React.PureComponent {
       .then((data) => console.log(data));
   };
 
-  render() {
-    return (
-      <div>
-        {this.state.placeName ? (
-          <CreateGameForm
-            onCreateGameFormSubmit={this.handleCreateGameSubmit}
-            placeName={this.state.placeName}
-            placeAddress={this.state.placeAddress}
-            placeHours={this.state.placeHours}
-          />
-        ) : null}
+  renderProfile = () => {
+    if (this.state.createdGameAndShowProfile) {
+      return (
+        <div>
+          <Profile />
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {this.state.placeName ? (
+            <CreateGameForm
+              onDateChange={this.handleGettingDate}
+              onTimeChange={this.handleGettingTime}
+              onCommentsChange={this.handleGettingComments}
+              onMaxPlayersChange={this.handleGettingMaxPlayers}
+              onCreateGameFormSubmit={this.handleCreateGameSubmit}
+              placeName={this.state.placeName}
+              placeAddress={this.state.placeAddress}
+              placeHours={this.state.placeHours}
+            />
+          ) : null}
+          <MyMapComponent onPlaceClick={this.getPlace} />
+        </div>
+      );
+    }
+  };
 
-        <MyMapComponent onPlaceClick={this.getPlace} />
-      </div>
-    );
+  render() {
+    return this.renderProfile();
   }
 }

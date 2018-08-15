@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 
 const styles = (theme) => ({
   container: {
@@ -95,8 +93,9 @@ class TemporaryDrawer extends Component {
                 <div>
                   <form className={classes.container} noValidate>
                     <TextField
+                      onChange={(event) => this.props.onDateChange(event)}
                       id="date"
-                      label="Pick Date"
+                      label="Pick the date"
                       type="date"
                       className={classes.textField}
                       InputLabelProps={{ shrink: true }}
@@ -106,10 +105,11 @@ class TemporaryDrawer extends Component {
                   <br />
                   <form className={classes.container} noValidate>
                     <TextField
+                      onChange={(event) => this.props.onTimeChange(event)}
                       id="time"
-                      label="Alarm clock"
+                      label="Pick the time"
                       type="time"
-                      defaultValue="12:00"
+                      defaultValue="00:00"
                       className={classes.textField}
                       InputLabelProps={{ shrink: true }}
                       inputProps={
@@ -125,6 +125,7 @@ class TemporaryDrawer extends Component {
                     autoComplete="off"
                   >
                     <TextField
+                      onChange={(event) => this.props.onMaxPlayersChange(event)}
                       id="number"
                       label="Max Number of Players"
                       type="number"
@@ -135,6 +136,7 @@ class TemporaryDrawer extends Component {
                   </form>
 
                   <TextField
+                    onChange={(event) => this.props.onCommentsChange(event)}
                     id="multiline-static"
                     label="Comments"
                     multiline

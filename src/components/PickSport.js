@@ -110,7 +110,7 @@ function PickSport(props) {
     <div className={classes.root}>
       {images.map((image) => (
         <ButtonBase
-          onClick={() => sport(image.term)}
+          onClick={() => sport(image.term, image.title)}
           focusRipple
           key={image.title}
           className={classes.image}
