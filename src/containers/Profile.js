@@ -36,7 +36,10 @@ export default class Profile extends Component {
           loggedInNavbar={this.state.loggedInNavbar}
         />
         {this.state.sportTerm ? (
-          <Map sportTerm={this.state.sportTerm} />
+          <Map
+            loggedInUser={this.props.loggedInUser}
+            sportTerm={this.state.sportTerm}
+          />
         ) : this.state.clickedActionButton ? (
           <PickSport onSportClick={this.handleSportClick} />
         ) : (

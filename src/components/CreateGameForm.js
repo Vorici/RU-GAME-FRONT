@@ -58,6 +58,7 @@ class TemporaryDrawer extends Component {
   };
 
   handleScheduleGameClick = () => {
+    this.props.handleCreateGameSubmit;
     this.setState({
       clickedScheduleGame: true
     });
@@ -68,7 +69,6 @@ class TemporaryDrawer extends Component {
     const placeAddress = this.props.placeAddress;
     const placeHours = this.props.placeHours;
     const { classes } = this.props;
-    
 
     return (
       <div>
@@ -99,39 +99,60 @@ class TemporaryDrawer extends Component {
                       label="Pick Date"
                       type="date"
                       className={classes.textField}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
+                      InputLabelProps={{ shrink: true }}
                     />
                   </form>
+                  <br />
+                  <br />
                   <form className={classes.container} noValidate>
-      <TextField
-        id="time"
-        label="Alarm clock"
-        type="time"
-        defaultValue="07:30"
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        inputProps={{
-          step: 300, // 5 min
-        }}
-      />
-    </form>
+                    <TextField
+                      id="time"
+                      label="Alarm clock"
+                      type="time"
+                      defaultValue="12:00"
+                      className={classes.textField}
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={
+                        { step: 300 } // 5 min
+                      }
+                    />
+                  </form>
+                  <br />
+                  <br />
                   <form
                     className={classes.container}
                     noValidate
                     autoComplete="off"
                   >
                     <TextField
-                      id="with-placeholder"
-                      label="With placeholder"
-                      placeholder="Placeholder"
+                      id="number"
+                      label="Max Number of Players"
+                      type="number"
                       className={classes.textField}
+                      InputLabelProps={{ shrink: true }}
                       margin="normal"
                     />
                   </form>
+
+                  <TextField
+                    id="multiline-static"
+                    label="Comments"
+                    multiline
+                    rows="6"
+                    className={classes.textField}
+                    margin="normal"
+                  />
+                  <br />
+                  <br />
+                  <Button
+                    onClick={this.props.onCreateGameFormSubmit}
+                    variant="contained"
+                    color="secondary"
+                    className={classes.button}
+                  >
+                    Create Game !
+                  </Button>
+                  <br />
                   <br />
                   <br />
                 </div>
