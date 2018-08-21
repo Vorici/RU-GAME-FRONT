@@ -21,8 +21,32 @@
 .App-intro {
   font-size: large;
 }
+.gamelist {
+  margin: auto;
+  position: relative;
+  height: 200px;
+  width: 640px;
+  top: 50px;
+  left: 50px;
+}
+.actionbutton {
+  margin: auto;
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+}
+.card {
+  margin: auto;
+  position: fixed;
+  right: 100px;
+  top: 50px;
+}
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

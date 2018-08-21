@@ -30,3 +30,11 @@ export const authLogin = (res, user) => {
   if (res === 200)
     return { type: 'AUTH_LOGIN', payload: { res: res, user: user } };
 };
+
+export const logUserOut = () => {
+  return { type: 'LOGOUT' };
+};
+
+export const getGames = (games) => {
+  return { type: 'GAMES_LIST', payload: games };
+};

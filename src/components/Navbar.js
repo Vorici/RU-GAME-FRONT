@@ -1,19 +1,24 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { navbarLogin } from '../redux/actions';
+import { navbarLogin, logUserOut } from '../redux/actions';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const styles = {
   root: {
     flexGrow: 1
   },
   button1: {
+    marginLeft: '80%'
+  },
+  navbaruser: {
     marginLeft: '80%'
   }
 };
@@ -22,15 +27,15 @@ const mapStateToProps = (state) => ({
   clickedNavbarLogin: state.clickedNavbarLoginButton,
   registerResponse: state.registerResponse,
   loggedIn: state.loggedIn,
-  username: state.usernameInputField
+  username: state.loggedInUser
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  navbarLogin: () => dispatch(navbarLogin())
+  navbarLogin: () => dispatch(navbarLogin()),
+  logUserOut: () => dispatch(logUserOut())
 });
 
 function DenseAppBar(props) {
-  console.log(props);
   const { classes } = props;
   return (
     <div className={classes.root}>
@@ -40,7 +45,24 @@ function DenseAppBar(props) {
             RU.Game
           </Typography>
           {props.loggedIn ? (
-            <Fragment> {props.username} </Fragment>
+            <Fragment>
+              <div className={classes.navbaruser}>
+                <IconButton className={classes.AccountCircle}>
+                  <AccountCircle />
+                </IconButton>
+                <a>{props.username} &nbsp;&nbsp;&nbsp; </a>
+                <Link to={'/'}>
+                  <Button
+                    onClick={props.logUserOut}
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                  >
+                    Logout
+                  </Button>
+                </Link>
+              </div>
+            </Fragment>
           ) : (
             <Fragment>
               <Button

@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import Navbar from '../components/Navbar';
+import { connect } from 'react-redux';
+import { getGames } from '../redux/actions';
 import ActionButton from '../components/ActionButton';
 import PickSport from '../components/PickSport';
 import Map from '../components/Map';
 import GameListItem from '../components/GameListItem';
+import FullWidthTabs from '../components/FullWidthTabs';
+import ProfileCard from '../components/ProfileCard';
 
 const GAMES_URL = 'http://localhost:5000/games';
 
-export default class Profile extends Component {
+const mapDispatchToProps = (dispatch) => ({
+  getTheGames: (games) => dispatch(getGames(games))
+});
+
+class Profile extends Component {
   constructor(props) {
     super(props);
 
@@ -23,18 +30,8 @@ export default class Profile extends Component {
   componentDidMount() {
     fetch(GAMES_URL)
       .then((r) => r.json())
-      .then((games) =>
-        this.setState({
-          games
-        })
-      );
+      .then((games) => this.props.getTheGames(games));
   }
-
-  renderGameInstances = () => {
-    return this.state.games.map((game) => (
-      <GameListItem key={game.id} game={game} />
-    ));
-  };
 
   handleActionButtonClick = () => {
     this.setState({
@@ -50,6 +47,7 @@ export default class Profile extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <div>
         {this.state.sportTerm ? (
@@ -57,12 +55,24 @@ export default class Profile extends Component {
         ) : this.state.clickedActionButton ? (
           <PickSport onSportClick={this.handleSportClick} />
         ) : (
-          <div>
-            {this.renderGameInstances()}
-            <ActionButton onActionButtonClick={this.handleActionButtonClick} />
+          <div className="gamelist">
+            <FullWidthTabs />
+            <div className="card">
+              <ProfileCard />
+            </div>
+            <div className="actionbutton">
+              <ActionButton
+                onActionButtonClick={this.handleActionButtonClick}
+              />
+            </div>
           </div>
         )}
       </div>
     );
   }
 }
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Profile);

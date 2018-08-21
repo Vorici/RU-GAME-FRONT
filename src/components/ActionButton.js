@@ -17,6 +17,7 @@ function FloatingActionButtons(props) {
   return (
     <div>
       <Button
+        disableRipple="false"
         onClick={props.onActionButtonClick}
         variant="fab"
         color="primary"
