@@ -21,13 +21,32 @@
 .App-intro {
   font-size: large;
 }
-.gamelist {
+.welcome {
+  width: 100vw;
+  height: 95vh;
+  background: url('soccer-night.jpeg') no-repeat center center fixed;
+}
+.picksport {
+  width: 100vw;
+  height: 95vh;
+  background: url('sportsall.jpg') no-repeat center center fixed;
+}
+
+/* .gamelist {
   margin: auto;
   position: relative;
   height: 200px;
   width: 640px;
   top: 50px;
   left: 50px;
+} */
+.gamelist {
+  margin: auto;
+  top: 50px;
+  left: 50px;
+}
+.userlist {
+  float: left;
 }
 .actionbutton {
   margin: auto;
@@ -35,13 +54,13 @@
   right: 50px;
   bottom: 50px;
 }
-.card {
+
+/* .card {
   margin: auto;
   position: fixed;
-  right: 100px;
-  top: 50px;
-}
-
+  right: 50px;
+  top: 67px;
+} */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

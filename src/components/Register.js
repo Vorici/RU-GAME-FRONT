@@ -25,13 +25,11 @@ class Register extends Component {
 
     this.state = {
       passwordInputField: null,
-      confirmPasswordInputField: null,
-      registrationClick: false
+      confirmPasswordInputField: null
     };
   }
 
   createUser = (email, username, password, confirmedPassword) => {
-    console.log(username);
     if (
       password !== '' &&
       password !== null &&
@@ -51,23 +49,22 @@ class Register extends Component {
       return fetch(CREATE_USER_URL, postConfig).then((r) =>
         this.renderBasedOnStatusCode(r.status)
       );
-    } else {
-      this.setState({ registrationClick: false });
-      alert('Your Passwords did not match! Please try again.');
     }
+    // else {
+    //   alert('Your Passwords did not match! Please try again.');
+    // }
   };
 
   renderBasedOnStatusCode = (response) => {
-    console.log(response);
-    if (response === 204) {
-      alert('Email/Username already in use...');
-    } else {
+    if (response === 200) {
       return this.props.registerResponse(response);
     }
+    // else {
+    //   return alert('Email or Username already in use');
+    // }
   };
 
   handleRegistration = () => {
-    console.log('HIIIII', this.props);
     this.createUser(
       this.props.emailInputField,
       this.props.usernameInputField,
@@ -101,12 +98,8 @@ class Register extends Component {
                 <h2 className="ui image header">
                   <div className="content">Registration</div>
                 </h2>
-                <form
-                  action="https://s.codepen.io/voltron2112/debug/PqrEPM?"
-                  method="get"
-                  className="ui large form"
-                >
-                  <div className="ui stacked secondary  segment">
+                <form method="get" className="ui large form">
+                  <div className="ui stacked secondary segment">
                     <div className="field">
                       <div className="ui left icon input">
                         <i className="user icon" />

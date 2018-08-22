@@ -26,9 +26,13 @@ export const getRegisterResponse = (res) => {
   return { type: 'REGISTERRESPONSE', payload: res };
 };
 
-export const authLogin = (res, user) => {
+export const authLogin = (res, user, userId) => {
+  console.log('BOOOM', res, user, userId);
   if (res === 200)
-    return { type: 'AUTH_LOGIN', payload: { res: res, user: user } };
+    return {
+      type: 'AUTH_LOGIN',
+      payload: { res: res, user: user, userId: userId }
+    };
 };
 
 export const logUserOut = () => {
@@ -37,4 +41,20 @@ export const logUserOut = () => {
 
 export const getGames = (games) => {
   return { type: 'GAMES_LIST', payload: games };
+};
+
+export const getUserGames = (userGames) => {
+  return { type: 'USER_GAMES', payload: userGames };
+};
+
+export const getFriends = (userFriends) => {
+  return { type: 'USER_FRIENDS', payload: userFriends };
+};
+
+export const getUsers = (users) => {
+  return { type: 'ALL_USERS', payload: users };
+};
+
+export const clearRegisterResponse = () => {
+  return { type: 'CLEAR_REG_RESPONSE' };
 };

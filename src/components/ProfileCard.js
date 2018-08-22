@@ -1,20 +1,21 @@
 import React from 'react';
 import { Card, Icon } from 'semantic-ui-react';
+import pablo from '../Images/pablo.png';
 
-const extra = (
+const friends = (
   <a>
     <Icon name="user" />
     16 Friends
   </a>
 );
 
-const profileCard = () => (
+const profileCard = (props) => (
   <Card
-    image="/images/avatar/large/elliot.jpg"
-    header="Elliot Baker"
-    meta="Friend"
-    description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
-    extra={extra}
+    image={pablo}
+    header={props.username}
+    meta={props.email}
+    // description="Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat."
+    extra={friends}
   />
 );
 

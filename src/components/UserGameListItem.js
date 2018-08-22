@@ -41,6 +41,8 @@ class ControlledExpansionPanels extends Component {
     const { classes } = this.props;
     const { expanded } = this.state;
 
+    console.log(game);
+
     return (
       <div className={classes.root}>
         <ExpansionPanel
@@ -60,12 +62,8 @@ class ControlledExpansionPanels extends Component {
           </ExpansionPanelDetails>
           <Divider />
           <ExpansionPanelActions>
-            <Button
-              onClick={() => this.props.handleJoinGameClick(game)}
-              size="medium"
-              color="primary"
-            >
-              Join Game
+            <Button size="medium" color="primary">
+              Leave Game
             </Button>
           </ExpansionPanelActions>
         </ExpansionPanel>

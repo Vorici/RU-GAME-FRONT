@@ -3,7 +3,7 @@ import { withRouter, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Navbar from './components/Navbar';
 import Profile from './containers/Profile';
-import Create from './containers/Create';
+// import Create from './containers/Create';
 import Login from './components/Login';
 import Register from './components/Register';
 import Welcome from './containers/Welcome';
@@ -11,8 +11,6 @@ import PickSport from './components/PickSport';
 import './App.css';
 
 const mapStateToProps = (state) => ({
-  username: state.usernameInputField,
-  loginAuthRes: state.loginResponse,
   loggedIn: state.loggedIn
 });
 

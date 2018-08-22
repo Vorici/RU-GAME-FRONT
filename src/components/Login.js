@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getEmail, authLogin } from '../redux/actions';
+import { getEmail, authLogin, clearRegisterResponse } from '../redux/actions';
 import { Button, Icon } from 'semantic-ui-react';
 import { Modal } from 'semantic-ui-react';
 
 const mapStateToProps = (state) => ({
-  emailInputField: state.emailInputField
+  emailInputField: state.emailInputField,
+  registerResponse: state.registerResponse
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getEmail: (e) => dispatch(getEmail(e)),
-  authLogin: (res, user) => dispatch(authLogin(res, user))
+  authLogin: (res, user, userId) => dispatch(authLogin(res, user, userId)),
+  setRegisterResponseToNull: () => dispatch(clearRegisterResponse())
 });
 
 class Login extends Component {
@@ -19,8 +21,6 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      clickedFormLoginButton: false,
-      clickedFormRegisterButton: false,
       loginPassword: null,
       authResponse: null
     };
@@ -60,13 +60,10 @@ class Login extends Component {
     };
     return fetch(AUTH_URL, getConfig)
       .then((r) => r.json())
-      .then((res) => this.props.authLogin(res.status, res.user));
+      .then((res) => this.props.authLogin(res.status, res.user, res.user_id));
   };
 
   handleLoginFormClick = () => {
-    this.setState({
-      clickedFormLoginButton: true
-    });
     this.getToken();
   };
 
@@ -74,6 +71,37 @@ class Login extends Component {
     this.setState({
       loginPassword: event.target.value
     });
+  };
+
+  renderEmailFromRegistration = () => {
+    if (this.props.registerResponse === 200) {
+      return (
+        <div className="ui left icon input">
+          <i className="user icon" />
+          <input
+            onChange={(event) => this.props.getEmail(event)}
+            type="text"
+            name="email"
+            placeholder="E-mail address"
+            value={this.props.emailInputField}
+          />
+        </div>
+      );
+      this.props.setRegisterResponseToNull();
+    } else {
+      return (
+        <div className="ui left icon input">
+          <i className="user icon" />
+
+          <input
+            onChange={(event) => this.props.getEmail(event)}
+            type="text"
+            name="email"
+            placeholder="E-mail address"
+          />
+        </div>
+      );
+    }
   };
 
   render() {
@@ -93,15 +121,7 @@ class Login extends Component {
                 >
                   <div className="ui stacked secondary  segment">
                     <div className="field">
-                      <div className="ui left icon input">
-                        <i className="user icon" />
-                        <input
-                          onChange={(event) => this.props.getEmail(event)}
-                          type="text"
-                          name="email"
-                          placeholder="E-mail address"
-                        />
-                      </div>
+                      {this.renderEmailFromRegistration()}
                     </div>
                     <div className="field">
                       <div className="ui left icon input">
@@ -122,7 +142,7 @@ class Login extends Component {
                         className="ui fluid large teal submit button"
                       >
                         Login
-                      </div>{' '}
+                      </div>
                     </Link>
                   </div>
 

@@ -134,9 +134,6 @@ class Map extends React.PureComponent {
   };
 
   handleCreateGameSubmit = () => {
-    this.setState({
-      createdGameAndShowProfile: true
-    });
     const CREATE_GAME_URL = 'http://localhost:5000/games/create';
     const created_by_username = this.props.username;
     const name = this.state.placeName;
@@ -162,9 +159,13 @@ class Map extends React.PureComponent {
         }
       })
     };
-    return fetch(CREATE_GAME_URL, postConfig)
+    fetch(CREATE_GAME_URL, postConfig)
       .then((r) => r.json())
-      .then((data) => console.log('TADA', data));
+      .then(
+        this.setState({
+          createdGameAndShowProfile: true
+        })
+      );
   };
 
   renderProfile = () => {

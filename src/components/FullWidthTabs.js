@@ -5,12 +5,14 @@ import { withStyles } from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import GameListItem from './GameListItem';
+import UserGameListItem from './UserGameListItem';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 
 const mapStateToProps = (state) => ({
-  games: state.games
+  games: state.games,
+  userGames: state.userGames
 });
 
 function TabContainer({ children, dir }) {
@@ -28,8 +30,7 @@ TabContainer.propTypes = {
 
 const styles = (theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
-    width: 500
+    backgroundColor: theme.palette.background.paper
   }
 });
 
@@ -46,15 +47,26 @@ class FullWidthTabs extends React.Component {
     this.setState({ value: index });
   };
 
+  renderUserGameInstances = () => {
+    return this.props.userGames.map((game) => (
+      <UserGameListItem key={game.id} game={game} />
+    ));
+  };
+
   renderGameInstances = () => {
     return this.props.games.map((game) => (
-      <GameListItem key={game.id} game={game} />
+      <GameListItem
+        handleJoinGameClick={this.props.onJoinGameClick}
+        key={game.id}
+        userId={this.props.userId}
+        game={game}
+      />
     ));
   };
 
   render() {
+    console.log(this.props);
     const { classes, theme } = this.props;
-    console.log('HIIIIIIII', this.props.games);
     return (
       <div className={classes.root}>
         <AppBar position="static" color="default">
@@ -77,7 +89,12 @@ class FullWidthTabs extends React.Component {
           <TabContainer dir={theme.direction}>
             {this.renderGameInstances()}
           </TabContainer>
-          <TabContainer dir={theme.direction}>HI</TabContainer>
+          <TabContainer
+            onClick={this.props.OnMyGamesTabChange}
+            dir={theme.direction}
+          >
+            {this.renderUserGameInstances()}
+          </TabContainer>
         </SwipeableViews>
       </div>
     );
