@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  getGames,
-  getUserGames,
-  getFriends,
-  getUsers,
-  filterGames
-} from '../redux/actions';
+import { getGames, getUserGames, getFriends, getUsers } from '../redux/actions';
 import ActionButton from '../components/ActionButton';
 import PickSport from '../components/PickSport';
 import Map from '../components/Map';
@@ -40,6 +34,7 @@ class Profile extends Component {
 
     this.state = {
       clickedActionButton: false,
+      showFriends: false,
       sportTerm: null,
       sport: null,
       toast: false,
@@ -49,7 +44,6 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    console.log('SHIMMMMY', this.props.userId);
     const USERS_URL = 'http://localhost:5000/everyuser';
     const GAMES_URL = 'http://localhost:5000/games';
     const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
@@ -87,14 +81,9 @@ class Profile extends Component {
   handleJoinGame = (game) => {
     const JOIN_GAME_URL = 'http://localhost:5000/usergames/create';
     const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
-    const allGames = [...this.props.games];
     const userId = this.props.userId;
     const gameId = game.id;
-    const gamesFilter = this.props.userGames.map((ug) => {
-      return allGames.filter((g) => g.id !== ug.id);
-    });
 
-    console.log('HEYYYYY HOW ARE YOUUUUUU', gamesFilter);
     const postConfig = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -117,15 +106,47 @@ class Profile extends Component {
     });
   };
 
-  // handleMyGamesTabChange = () => {
-  //   const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
+  addFriendToDatabase = (friendId) => {
+    const ADD_FRIEND_URL = 'http://localhost:5000/friends/create';
+    const FRIENDS_URL = `http://localhost:5000/friends/${this.props.userId}`;
+    const userId = this.props.userId;
 
-  //   fetch(USER_GAMES_URL)
-  //     .then((ug) => ug.json())
-  //     .then((userGames) =>
-  //       this.props.getUserGames(JSON.parse(userGames.userGames))
-  //     );
-  // };
+    const postConfig = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        friendship: {
+          user_id: userId,
+          friend_id: friendId
+        }
+      })
+    };
+
+    return fetch(ADD_FRIEND_URL, postConfig).then((j) => {
+      if (j.status === 200) {
+        fetch(FRIENDS_URL)
+          .then((f) => f.json())
+          .then((friends) => this.props.getTheFriends(friends));
+      }
+    });
+  };
+
+  handleAddingFriend = (friend) => {
+    this.addFriendToDatabase(friend.id);
+  };
+
+  handleShowFriendsClick = () => {
+    this.setState({
+      showFriends: true
+    });
+  };
+
+  handleShowAllUsersClick = () => {
+    this.setState({
+      showFriends: false
+    });
+  };
+
   handleContextRef = (contextRef) => this.setState({ contextRef });
 
   render() {
@@ -145,13 +166,19 @@ class Profile extends Component {
             <Grid columns="equal">
               <Grid.Column>
                 <Segment>
-                  <UserPaper users={this.props.users} />
+                  <UserPaper
+                    handleShowAllUsersClick={this.handleShowAllUsersClick}
+                    showFriends={this.state.showFriends}
+                    userFriends={this.props.userFriends}
+                    handleAddingFriend={this.handleAddingFriend}
+                    users={this.props.users}
+                    friends={this.props.userFriends}
+                  />
                 </Segment>
               </Grid.Column>
               <Grid.Column width={8}>
                 <Segment>
-                  <FullWidthTabs
-                    // onMyGamesTabChange={this.handleMyGamesTabChange}
+                  <FullWidthTabs // onMyGamesTabChange={this.handleMyGamesTabChange}
                     userId={this.props.userId}
                     onJoinGameClick={this.handleJoinGame}
                   />
@@ -162,6 +189,7 @@ class Profile extends Component {
                   <ProfileCard
                     username={this.props.username}
                     email={this.props.userEmail}
+                    onShowFriendsClick={this.handleShowFriendsClick}
                   />
                 </Segment>
               </Grid.Column>

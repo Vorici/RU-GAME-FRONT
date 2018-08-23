@@ -7,7 +7,8 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker
+  Marker,
+  InfoWindow
 } from 'react-google-maps';
 import Profile from '../containers/Profile';
 

@@ -31,6 +31,9 @@
   height: 95vh;
   background: url('blackBackground.jpg') no-repeat center center fixed;
 }
+.favorite {
+  color: #fb8c00;
+}
 
 /* .gamelist {
   margin: auto;

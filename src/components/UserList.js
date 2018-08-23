@@ -19,26 +19,6 @@ const styles = (theme) => ({
 });
 
 class UserList extends Component {
-  state = {
-    checked: [1]
-  };
-
-  handleToggle = (value) => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked
-    });
-  };
-
   renderUsers = () => {
     return this.props.users.map((user) => (
       <ListItem
@@ -48,13 +28,20 @@ class UserList extends Component {
         button
         className={this.props.listItem}
       >
-        {/* <Avatar alt="Remy Sharp" src="/static/images/remy.jpg" /> */}
-        <FaceIcon />
+        <FaceIcon color="primary" />
         <ListItemText primary={user.username} />
         <ListItemSecondaryAction>
-          <IconButton aria-label="Comments">
-            <FavoriteIcon />
-          </IconButton>
+          {this.props.userFriends.find((f) => f.id === user.id) ? (
+            <IconButton aria-label="Comments">
+              <FavoriteIcon style={{ color: 'red' }} />
+            </IconButton>
+          ) : (
+            <IconButton aria-label="Comments">
+              <FavoriteIcon
+                onClick={() => this.props.handleAddingFriend(user)}
+              />
+            </IconButton>
+          )}
         </ListItemSecondaryAction>
       </ListItem>
     ));
@@ -62,7 +49,6 @@ class UserList extends Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.root}>
         <List>{this.renderUsers()}</List>

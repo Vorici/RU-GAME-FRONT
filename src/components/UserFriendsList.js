@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import SentimentVerySatisfied from '@material-ui/icons/SentimentVerySatisfied';
 
 const styles = (theme) => ({
   root: {
@@ -18,26 +19,6 @@ const styles = (theme) => ({
 });
 
 class UserFriendsList extends Component {
-  state = {
-    checked: [1]
-  };
-
-  handleToggle = (value) => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked
-    });
-  };
-
   renderUserFriends = () => {
     return this.props.friends.map((friend) => (
       <ListItem
@@ -47,11 +28,11 @@ class UserFriendsList extends Component {
         button
         className={this.props.listItem}
       >
-        <Avatar alt="Remy Sharp" src="/static/images/remy.jpg" />
+        <SentimentVerySatisfied color="primary" />
         <ListItemText primary={friend.username} />
         <ListItemSecondaryAction>
           <IconButton aria-label="Comments">
-            <FavoriteIcon />
+            <FavoriteIcon style={{ color: 'red' }} />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>

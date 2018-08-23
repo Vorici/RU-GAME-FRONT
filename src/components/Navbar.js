@@ -42,7 +42,9 @@ function DenseAppBar(props) {
       <AppBar position="static">
         <Toolbar variant="dense">
           <Typography variant="title" color="inherit">
-            RU.Game
+            <Link to={'/'}>
+              <a style={{ color: 'white' }}> ru.game</a>
+            </Link>
           </Typography>
           {props.loggedIn ? (
             <Fragment>
@@ -50,13 +52,15 @@ function DenseAppBar(props) {
                 <IconButton className={classes.AccountCircle}>
                   <AccountCircle />
                 </IconButton>
-                <a>{props.username} &nbsp;&nbsp;&nbsp; </a>
+                <a style={{ color: 'white' }}>
+                  {props.username} &nbsp;&nbsp;&nbsp;{' '}
+                </a>
                 <Link to={'/'}>
                   <Button
                     onClick={props.logUserOut}
                     variant="contained"
                     size="large"
-                    color="primary"
+                    color="secondary"
                   >
                     Logout
                   </Button>
@@ -68,7 +72,7 @@ function DenseAppBar(props) {
               <Button
                 variant="contained"
                 size="large"
-                color="primary"
+                color="secondary"
                 className={classes.button1}
                 component={Link}
                 to="/login"

@@ -148,12 +148,15 @@ class Register extends Component {
                         />
                       </div>
                     </div>
-                    <div
-                      onClick={this.handleRegistration}
-                      className="ui fluid large teal submit button"
-                    >
-                      <Link to={'/login'}> Sign Up! </Link>
-                    </div>
+                    <Link to={'/login'}>
+                      {' '}
+                      <div
+                        onClick={this.handleRegistration}
+                        className="ui fluid large teal submit button"
+                      >
+                        Sign Up!
+                      </div>
+                    </Link>
                     <div className="ui message">
                       <Button animated="fade">
                         <Button.Content visible>

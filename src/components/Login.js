@@ -85,9 +85,9 @@ class Login extends Component {
             placeholder="E-mail address"
             value={this.props.emailInputField}
           />
+          {this.props.setRegisterResponseToNull()}
         </div>
       );
-      this.props.setRegisterResponseToNull();
     } else {
       return (
         <div className="ui left icon input">

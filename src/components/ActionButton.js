@@ -19,7 +19,7 @@ function FloatingActionButtons(props) {
       <Button
         onClick={props.onActionButtonClick}
         variant="fab"
-        color="primary"
+        color="secondary"
         aria-label="Add"
         className={props.button}
       >

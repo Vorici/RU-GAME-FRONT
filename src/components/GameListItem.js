@@ -45,7 +45,6 @@ class ControlledExpansionPanels extends Component {
   render() {
     const game = this.props.game;
     const userGames = this.props.userGames;
-    const games = this.props.games;
     const { classes } = this.props;
     const { expanded } = this.state;
 
