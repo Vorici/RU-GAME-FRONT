@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import { getGames, getUserGames } from '../redux/actions';
 import { connect } from 'react-redux';
 import CreateGameForm from './CreateGameForm';
 import { compose, withProps, withHandlers, withState } from 'recompose';
@@ -17,7 +18,13 @@ const MAP_URL =
   'https://maps.googleapis.com/maps/api/js?key=AIzaSyDWyyxEiv9VWEbIjgIaekAKxpiVMC5sj9A&v=3.exp&libraries=geometry,drawing,places';
 
 const mapStateToProps = (state) => ({
-  username: state.usernameInputField
+  username: state.usernameInputField,
+  userId: state.loggedInUserId
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getTheGames: (games) => dispatch(getGames(games)),
+  getUserGames: (userGames) => dispatch(getUserGames(userGames))
 });
 
 const MyMapComponent = compose(
@@ -136,6 +143,10 @@ class Map extends React.PureComponent {
 
   handleCreateGameSubmit = () => {
     const CREATE_GAME_URL = 'http://localhost:5000/games/create';
+
+    const GAMES_URL = 'http://localhost:5000/games';
+    const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
+
     const created_by_username = this.props.username;
     const name = this.state.placeName;
     const address = this.state.placeAddress;
@@ -160,8 +171,15 @@ class Map extends React.PureComponent {
         }
       })
     };
-    fetch(CREATE_GAME_URL, postConfig)
-      .then((r) => r.json())
+    fetch(CREATE_GAME_URL, postConfig).then((r) => r.json());
+    fetch(GAMES_URL)
+      .then((g) => g.json())
+      .then((games) => this.props.getTheGames(games));
+    fetch(USER_GAMES_URL)
+      .then((ug) => ug.json())
+      .then((userGames) =>
+        this.props.getUserGames(JSON.parse(userGames.userGames))
+      )
       .then(
         this.setState({
           createdGameAndShowProfile: true
@@ -202,4 +220,7 @@ class Map extends React.PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(Map);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Map);

@@ -5,9 +5,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import DeleteIcon from '@material-ui/icons/Delete';
 import SentimentVerySatisfied from '@material-ui/icons/SentimentVerySatisfied';
 
 const styles = (theme) => ({
@@ -32,7 +31,9 @@ class UserFriendsList extends Component {
         <ListItemText primary={friend.username} />
         <ListItemSecondaryAction>
           <IconButton aria-label="Comments">
-            <FavoriteIcon style={{ color: 'red' }} />
+            <DeleteIcon
+              onClick={() => this.props.handleDeletingFriend(friend.id)}
+            />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>

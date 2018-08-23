@@ -60,7 +60,11 @@ class ControlledExpansionPanels extends Component {
           </ExpansionPanelDetails>
           <Divider />
           <ExpansionPanelActions>
-            <Button size="medium" color="primary">
+            <Button
+              onClick={() => this.props.handleLeaveGame(game)}
+              size="medium"
+              color="primary"
+            >
               Leave Game
             </Button>
           </ExpansionPanelActions>

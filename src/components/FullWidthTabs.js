@@ -59,7 +59,11 @@ class FullWidthTabs extends React.Component {
     }, []);
 
     return this.props.userGames.map((game) => (
-      <UserGameListItem key={game.id} game={game} />
+      <UserGameListItem
+        key={game.id}
+        game={game}
+        handleLeaveGame={this.props.handleLeaveGame}
+      />
     ));
   };
 

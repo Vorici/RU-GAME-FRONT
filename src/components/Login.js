@@ -85,7 +85,6 @@ class Login extends Component {
             placeholder="E-mail address"
             value={this.props.emailInputField}
           />
-          {this.props.setRegisterResponseToNull()}
         </div>
       );
     } else {
@@ -107,7 +106,7 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <Modal size={'small'} open={true} closeIcon>
+        <Modal size={'small'} open={true} closeOnDimmerClick={true} closeIcon>
           <Modal.Content>
             <div className="ui middle aligned center aligned grid">
               <div className="column">

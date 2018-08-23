@@ -42,9 +42,9 @@ function PaperSheet(props) {
             <UserFriendsList
               handleAddingFriend={props.handleAddingFriend}
               friends={props.userFriends}
+              handleDeletingFriend={props.handleDeletingFriend}
             />
           </Typography>
-          ;
         </Paper>
       ) : (
         <Paper className={classes.root} elevation={1}>
@@ -54,6 +54,7 @@ function PaperSheet(props) {
 
           <Typography component="p">
             <UserList
+              userId={props.userId}
               userFriends={props.userFriends}
               handleAddingFriend={props.handleAddingFriend}
               users={props.users}

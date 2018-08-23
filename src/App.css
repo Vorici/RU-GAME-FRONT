@@ -72,3 +72,7 @@
     transform: rotate(360deg);
   }
 }
+
+.ui.fluid.large.teal.submit.button {
+  background-color: purple !important;
+}

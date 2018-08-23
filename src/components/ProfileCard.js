@@ -12,7 +12,7 @@ const profileCard = (props) => (
       <div onClick={props.onShowFriendsClick}>
         <a>
           <Icon name="user" />
-          16 Friends
+          {props.userFriends.length} Friends
         </a>
       </div>
     }

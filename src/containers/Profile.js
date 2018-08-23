@@ -39,7 +39,8 @@ class Profile extends Component {
       sport: null,
       toast: false,
       errorToast: false,
-      contextRef: ''
+      contextRef: '',
+      check: false
     };
   }
 
@@ -131,8 +132,38 @@ class Profile extends Component {
     });
   };
 
+  deleteFriendship = (friendId) => {
+    const DELETE_FRIEND_URL = 'http://localhost:5000/friends/destroy';
+    const FRIENDS_URL = `http://localhost:5000/friends/${this.props.userId}`;
+    const userId = this.props.userId;
+
+    const postConfig = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        friendship: {
+          user_id: userId,
+          friend_id: friendId
+        }
+      })
+    };
+
+    return fetch(DELETE_FRIEND_URL, postConfig).then((j) => {
+      if (j.status === 200) {
+        alert('deleted');
+        fetch(FRIENDS_URL)
+          .then((f) => f.json())
+          .then((friends) => this.props.getTheFriends(friends));
+      }
+    });
+  };
+
   handleAddingFriend = (friend) => {
     this.addFriendToDatabase(friend.id);
+  };
+
+  handleDeletingFriend = (friendId) => {
+    this.deleteFriendship(friendId);
   };
 
   handleShowFriendsClick = () => {
@@ -144,6 +175,36 @@ class Profile extends Component {
   handleShowAllUsersClick = () => {
     this.setState({
       showFriends: false
+    });
+  };
+
+  handleLeaveGame = (game) => {
+    console.log('AAAAAAA', game);
+    const LEAVE_GAME_URL = `http://localhost:5000/game/${game.id}`;
+    const GAMES_URL = 'http://localhost:5000/games';
+    const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
+
+    const postConfig = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    fetch(LEAVE_GAME_URL, postConfig).then((j) => {
+      if (j.status === 200) {
+        alert('Deleted Game from your history');
+        fetch(GAMES_URL)
+          .then((g) => g.json())
+          .then((games) => this.props.getTheGames(games));
+        fetch(USER_GAMES_URL)
+          .then((ug) => ug.json())
+          .then((userGames) =>
+            this.props.getUserGames(JSON.parse(userGames.userGames))
+          )
+          .then(
+            this.setState({
+              check: true
+            })
+          );
+      }
     });
   };
 
@@ -171,6 +232,7 @@ class Profile extends Component {
                     showFriends={this.state.showFriends}
                     userFriends={this.props.userFriends}
                     handleAddingFriend={this.handleAddingFriend}
+                    handleDeletingFriend={this.handleDeletingFriend}
                     users={this.props.users}
                     friends={this.props.userFriends}
                   />
@@ -179,6 +241,7 @@ class Profile extends Component {
               <Grid.Column width={8}>
                 <Segment>
                   <FullWidthTabs // onMyGamesTabChange={this.handleMyGamesTabChange}
+                    handleLeaveGame={this.handleLeaveGame}
                     userId={this.props.userId}
                     onJoinGameClick={this.handleJoinGame}
                   />
@@ -187,6 +250,7 @@ class Profile extends Component {
               <Grid.Column>
                 <Segment>
                   <ProfileCard
+                    userFriends={this.props.userFriends}
                     username={this.props.username}
                     email={this.props.userEmail}
                     onShowFriendsClick={this.handleShowFriendsClick}
