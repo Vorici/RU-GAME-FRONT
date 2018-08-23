@@ -11,8 +11,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 
 const mapStateToProps = (state) => ({
-  games: state.games,
-  userGames: state.userGames
+  filteredGames: state.filteredGames,
+  userGames: state.userGames,
+  games: state.games
 });
 
 function TabContainer({ children, dir }) {
@@ -48,6 +49,15 @@ class FullWidthTabs extends React.Component {
   };
 
   renderUserGameInstances = () => {
+    const uniqueUserGames = this.props.userGames.reduce((unique, o) => {
+      if (
+        !unique.some((obj) => obj.label === o.label && obj.value === o.value)
+      ) {
+        unique.push(o);
+      }
+      return unique;
+    }, []);
+
     return this.props.userGames.map((game) => (
       <UserGameListItem key={game.id} game={game} />
     ));
@@ -89,10 +99,7 @@ class FullWidthTabs extends React.Component {
           <TabContainer dir={theme.direction}>
             {this.renderGameInstances()}
           </TabContainer>
-          <TabContainer
-            onClick={this.props.OnMyGamesTabChange}
-            dir={theme.direction}
-          >
+          <TabContainer dir={theme.direction}>
             {this.renderUserGameInstances()}
           </TabContainer>
         </SwipeableViews>

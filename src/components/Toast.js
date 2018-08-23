@@ -98,9 +98,9 @@ class Toast extends React.Component {
     open: true
   };
 
-  //   handleClick = () => {
-  //     this.setState({ open: true });
-  //   };
+  handleClick = () => {
+    this.setState({ open: true });
+  };
 
   handleClose = (event, reason) => {
     this.setState({ open: false });
@@ -116,9 +116,12 @@ class Toast extends React.Component {
             vertical: 'bottom',
             horizontal: 'left'
           }}
+          open={this.state.open}
           autoHideDuration={2000}
+          onClose={this.handleClose}
         >
           <MySnackbarContentWrapper
+            onClose={this.handleClose}
             variant="success"
             message="GAME JOINED! HAVE FUN!"
           />

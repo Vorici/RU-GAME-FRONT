@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getGames, getUserGames, getFriends, getUsers } from '../redux/actions';
+import {
+  getGames,
+  getUserGames,
+  getFriends,
+  getUsers,
+  filterGames
+} from '../redux/actions';
 import ActionButton from '../components/ActionButton';
 import PickSport from '../components/PickSport';
 import Map from '../components/Map';
@@ -9,7 +15,7 @@ import ProfileCard from '../components/ProfileCard';
 import Toast from '../components/Toast';
 import ErrorToast from '../components/ErrorToast';
 import UserPaper from './UserPaper';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Grid, Segment, Sticky } from 'semantic-ui-react';
 
 const mapDispatchToProps = (dispatch) => ({
   getTheGames: (games) => dispatch(getGames(games)),
@@ -24,7 +30,8 @@ const mapStateToProps = (state) => ({
   username: state.loggedInUser,
   userId: state.loggedInUserId,
   userFriends: state.userFriends,
-  userGames: state.userGames
+  userGames: state.userGames,
+  games: state.games
 });
 
 class Profile extends Component {
@@ -36,7 +43,8 @@ class Profile extends Component {
       sportTerm: null,
       sport: null,
       toast: false,
-      errorToast: false
+      errorToast: false,
+      contextRef: ''
     };
   }
 
@@ -77,13 +85,16 @@ class Profile extends Component {
   };
 
   handleJoinGame = (game) => {
-    console.log('GAMEEEEEEEEECALLBACK', game);
     const JOIN_GAME_URL = 'http://localhost:5000/usergames/create';
     const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
-
+    const allGames = [...this.props.games];
     const userId = this.props.userId;
     const gameId = game.id;
+    const gamesFilter = this.props.userGames.map((ug) => {
+      return allGames.filter((g) => g.id !== ug.id);
+    });
 
+    console.log('HEYYYYY HOW ARE YOUUUUUU', gamesFilter);
     const postConfig = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -94,36 +105,31 @@ class Profile extends Component {
         }
       })
     };
+
     return fetch(JOIN_GAME_URL, postConfig).then((j) => {
       if (j.status === 200) {
-        this.setState({
-          toast: true
-        });
         fetch(USER_GAMES_URL)
           .then((ug) => ug.json())
           .then((userGames) =>
             this.props.getUserGames(JSON.parse(userGames.userGames))
           );
-      } else {
-        this.setState({
-          errorToast: true
-        });
       }
     });
   };
 
-  handleMyGamesTabChange = () => {
-    const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
+  // handleMyGamesTabChange = () => {
+  //   const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
 
-    fetch(USER_GAMES_URL)
-      .then((ug) => ug.json())
-      .then((userGames) =>
-        this.props.getUserGames(JSON.parse(userGames.userGames))
-      );
-  };
+  //   fetch(USER_GAMES_URL)
+  //     .then((ug) => ug.json())
+  //     .then((userGames) =>
+  //       this.props.getUserGames(JSON.parse(userGames.userGames))
+  //     );
+  // };
+  handleContextRef = (contextRef) => this.setState({ contextRef });
 
   render() {
-    console.log(this.props);
+    const { contextRef } = this.state;
     return (
       <div>
         {this.state.sportTerm ? (
@@ -145,7 +151,7 @@ class Profile extends Component {
               <Grid.Column width={8}>
                 <Segment>
                   <FullWidthTabs
-                    onMyGamesTabChange={this.handleMyGamesTabChange}
+                    // onMyGamesTabChange={this.handleMyGamesTabChange}
                     userId={this.props.userId}
                     onJoinGameClick={this.handleJoinGame}
                   />

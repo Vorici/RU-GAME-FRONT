@@ -41,8 +41,6 @@ class ControlledExpansionPanels extends Component {
     const { classes } = this.props;
     const { expanded } = this.state;
 
-    console.log(game);
-
     return (
       <div className={classes.root}>
         <ExpansionPanel
