@@ -11,14 +11,14 @@ import ErrorToast from '../components/ErrorToast';
 import UserPaper from './UserPaper';
 import { Grid, Segment, Sticky } from 'semantic-ui-react';
 
-const mapDispatchToProps = (dispatch) => ({
-  getTheGames: (games) => dispatch(getGames(games)),
-  getAllUsers: (users) => dispatch(getUsers(users)),
-  getUserGames: (userGames) => dispatch(getUserGames(userGames)),
-  getTheFriends: (friends) => dispatch(getFriends(friends))
+const mapDispatchToProps = dispatch => ({
+  getTheGames: games => dispatch(getGames(games)),
+  getAllUsers: users => dispatch(getUsers(users)),
+  getUserGames: userGames => dispatch(getUserGames(userGames)),
+  getTheFriends: friends => dispatch(getFriends(friends))
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   userEmail: state.emailInputField,
   users: state.users,
   username: state.loggedInUser,
@@ -51,19 +51,19 @@ class Profile extends Component {
     const FRIENDS_URL = `http://localhost:5000/friends/${this.props.userId}`;
 
     fetch(GAMES_URL)
-      .then((g) => g.json())
-      .then((games) => this.props.getTheGames(games));
+      .then(g => g.json())
+      .then(games => this.props.getTheGames(games));
     fetch(USER_GAMES_URL)
-      .then((ug) => ug.json())
-      .then((userGames) =>
+      .then(ug => ug.json())
+      .then(userGames =>
         this.props.getUserGames(JSON.parse(userGames.userGames))
       );
     fetch(FRIENDS_URL)
-      .then((f) => f.json())
-      .then((friends) => this.props.getTheFriends(friends));
+      .then(f => f.json())
+      .then(friends => this.props.getTheFriends(friends));
     fetch(USERS_URL)
-      .then((u) => u.json())
-      .then((users) => this.props.getAllUsers(users));
+      .then(u => u.json())
+      .then(users => this.props.getAllUsers(users));
   }
 
   handleActionButtonClick = () => {
@@ -79,7 +79,7 @@ class Profile extends Component {
     });
   };
 
-  handleJoinGame = (game) => {
+  handleJoinGame = game => {
     const JOIN_GAME_URL = 'http://localhost:5000/usergames/create';
     const USER_GAMES_URL = `http://localhost:5000/users/${this.props.userId}`;
     const userId = this.props.userId;
@@ -96,18 +96,18 @@ class Profile extends Component {
       })
     };
 
-    return fetch(JOIN_GAME_URL, postConfig).then((j) => {
+    return fetch(JOIN_GAME_URL, postConfig).then(j => {
       if (j.status === 200) {
         fetch(USER_GAMES_URL)
-          .then((ug) => ug.json())
-          .then((userGames) =>
+          .then(ug => ug.json())
+          .then(userGames =>
             this.props.getUserGames(JSON.parse(userGames.userGames))
           );
       }
     });
   };
 
-  addFriendToDatabase = (friendId) => {
+  addFriendToDatabase = friendId => {
     const ADD_FRIEND_URL = 'http://localhost:5000/friends/create';
     const FRIENDS_URL = `http://localhost:5000/friends/${this.props.userId}`;
     const userId = this.props.userId;
@@ -123,16 +123,16 @@ class Profile extends Component {
       })
     };
 
-    return fetch(ADD_FRIEND_URL, postConfig).then((j) => {
+    return fetch(ADD_FRIEND_URL, postConfig).then(j => {
       if (j.status === 200) {
         fetch(FRIENDS_URL)
-          .then((f) => f.json())
-          .then((friends) => this.props.getTheFriends(friends));
+          .then(f => f.json())
+          .then(friends => this.props.getTheFriends(friends));
       }
     });
   };
 
-  deleteFriendship = (friendId) => {
+  deleteFriendship = friendId => {
     const DELETE_FRIEND_URL = 'http://localhost:5000/friends/destroy';
     const FRIENDS_URL = `http://localhost:5000/friends/${this.props.userId}`;
     const userId = this.props.userId;
@@ -148,21 +148,21 @@ class Profile extends Component {
       })
     };
 
-    return fetch(DELETE_FRIEND_URL, postConfig).then((j) => {
+    return fetch(DELETE_FRIEND_URL, postConfig).then(j => {
       if (j.status === 200) {
         alert('deleted');
         fetch(FRIENDS_URL)
-          .then((f) => f.json())
-          .then((friends) => this.props.getTheFriends(friends));
+          .then(f => f.json())
+          .then(friends => this.props.getTheFriends(friends));
       }
     });
   };
 
-  handleAddingFriend = (friend) => {
+  handleAddingFriend = friend => {
     this.addFriendToDatabase(friend.id);
   };
 
-  handleDeletingFriend = (friendId) => {
+  handleDeletingFriend = friendId => {
     this.deleteFriendship(friendId);
   };
 
@@ -178,7 +178,7 @@ class Profile extends Component {
     });
   };
 
-  handleLeaveGame = (game) => {
+  handleLeaveGame = game => {
     console.log('AAAAAAA', game);
     const LEAVE_GAME_URL = `http://localhost:5000/game/${game.id}`;
     const GAMES_URL = 'http://localhost:5000/games';
@@ -188,15 +188,15 @@ class Profile extends Component {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
     };
-    fetch(LEAVE_GAME_URL, postConfig).then((j) => {
+    fetch(LEAVE_GAME_URL, postConfig).then(j => {
       if (j.status === 200) {
         alert('Deleted Game from your history');
         fetch(GAMES_URL)
-          .then((g) => g.json())
-          .then((games) => this.props.getTheGames(games));
+          .then(g => g.json())
+          .then(games => this.props.getTheGames(games));
         fetch(USER_GAMES_URL)
-          .then((ug) => ug.json())
-          .then((userGames) =>
+          .then(ug => ug.json())
+          .then(userGames =>
             this.props.getUserGames(JSON.parse(userGames.userGames))
           )
           .then(
@@ -208,7 +208,7 @@ class Profile extends Component {
     });
   };
 
-  handleContextRef = (contextRef) => this.setState({ contextRef });
+  handleContextRef = contextRef => this.setState({ contextRef });
 
   render() {
     const { contextRef } = this.state;

@@ -14,17 +14,16 @@ import {
 import Profile from '../containers/Profile';
 
 let SPORT_SEARCH_QUERY;
-const MAP_URL =
-  'https://maps.googleapis.com/maps/api/js?key=AIzaSyDWyyxEiv9VWEbIjgIaekAKxpiVMC5sj9A&v=3.exp&libraries=geometry,drawing,places';
+const MAP_URL = 'HIDDDDDEEENNNNNNNN MAP WILL BREAK ASK ADMIN FOR KEY';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   username: state.usernameInputField,
   userId: state.loggedInUserId
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getTheGames: (games) => dispatch(getGames(games)),
-  getUserGames: (userGames) => dispatch(getUserGames(userGames))
+const mapDispatchToProps = dispatch => ({
+  getTheGames: games => dispatch(getGames(games)),
+  getUserGames: userGames => dispatch(getUserGames(userGames))
 });
 
 const MyMapComponent = compose(
@@ -42,7 +41,7 @@ const MyMapComponent = compose(
       map: undefined
     };
     return {
-      onMapMounted: () => (ref) => {
+      onMapMounted: () => ref => {
         refs.map = ref;
       },
       fetchPlaces: ({ updatePlaces }) => {
@@ -64,7 +63,7 @@ const MyMapComponent = compose(
       }
     };
   })
-)((props) => {
+)(props => {
   return (
     <GoogleMap
       onTilesLoaded={props.fetchPlaces}
@@ -107,7 +106,7 @@ class Map extends React.PureComponent {
 
     SPORT_SEARCH_QUERY = this.props.sportTerm;
   }
-  getPlace = (place) => {
+  getPlace = place => {
     console.log(place);
     this.setState({
       placeName: place.name,
@@ -117,25 +116,25 @@ class Map extends React.PureComponent {
     });
   };
 
-  handleGettingDate = (event) => {
+  handleGettingDate = event => {
     this.setState({
       placeDate: event.target.value
     });
   };
 
-  handleGettingTime = (event) => {
+  handleGettingTime = event => {
     this.setState({
       placeTime: event.target.value
     });
   };
 
-  handleGettingComments = (event) => {
+  handleGettingComments = event => {
     this.setState({
       placeComments: event.target.value
     });
   };
 
-  handleGettingMaxPlayers = (event) => {
+  handleGettingMaxPlayers = event => {
     this.setState({
       placeMaxPlayers: event.target.value
     });
@@ -171,13 +170,13 @@ class Map extends React.PureComponent {
         }
       })
     };
-    fetch(CREATE_GAME_URL, postConfig).then((r) => r.json());
+    fetch(CREATE_GAME_URL, postConfig).then(r => r.json());
     fetch(GAMES_URL)
-      .then((g) => g.json())
-      .then((games) => this.props.getTheGames(games));
+      .then(g => g.json())
+      .then(games => this.props.getTheGames(games));
     fetch(USER_GAMES_URL)
-      .then((ug) => ug.json())
-      .then((userGames) =>
+      .then(ug => ug.json())
+      .then(userGames =>
         this.props.getUserGames(JSON.parse(userGames.userGames))
       )
       .then(
